@@ -329,9 +329,7 @@ static void advise_ref_fetch_first(void)
 {
 	if (!advice_push_fetch_first || !advice_push_update_rejected)
 		return;
-	//fprintf(stderr, "%s", push_get_color(PUSH_COLOR_ADVISE));
 	advise(_(message_advice_ref_fetch_first));
-	//fprintf(stderr, "%s", push_get_color(PUSH_COLOR_RESET));
 }
 
 static void advise_ref_needs_force(void)
