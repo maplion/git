@@ -17,6 +17,34 @@
 #include "string-list.h"
 #include "sha1-array.h"
 #include "sigchain.h"
+#include "color.h"
+
+static int transport_use_color = -1;
+static char transport_colors[][COLOR_MAXLEN] = {
+	GIT_COLOR_RESET,
+	GIT_COLOR_RED		/* REJECTED */
+};
+
+enum color_transport {
+	TRANSPORT_COLOR_RESET = 0,
+	TRANSPORT_COLOR_REJECTED = 1
+};
+
+static int parse_transport_color_slot(const char *slot)
+{
+	if (!strcasecmp(slot, "reset"))
+		return TRANSPORT_COLOR_RESET;
+	if (!strcasecmp(slot, "rejected"))
+		return TRANSPORT_COLOR_REJECTED;
+	return -1;
+}
+
+static const char *transport_get_color(enum color_transport ix)
+{
+	if (want_color(transport_use_color))
+		return transport_colors[ix];
+	return "";
+}
 
 static void set_upstreams(struct transport *transport, struct ref *refs,
 	int pretend)
@@ -325,7 +353,11 @@ static void print_ref_status(char flag, const char *summary,
 		else
 			fprintf(stdout, "%s\n", summary);
 	} else {
-		fprintf(stderr, " %c %-*s ", flag, summary_width, summary);
+		if (strstr(summary, "rejected") != NULL || strstr(summary, "failure") != NULL)
+			fprintf(stderr, " %s%c %-*s%s ", transport_get_color(TRANSPORT_COLOR_REJECTED),
+				flag, summary_width, summary, transport_get_color(TRANSPORT_COLOR_RESET));
+		else
+			fprintf(stderr, " %c %-*s ", flag, summary_width, summary);
 		if (from)
 			fprintf(stderr, "%s -> %s", prettify_refname(from->name), prettify_refname(to->name));
 		else
