@@ -22,12 +22,12 @@ int advice_add_embedded_repo = 1;
 static int advise_use_color = -1;
 static char advise_colors[][COLOR_MAXLEN] = {
 	GIT_COLOR_RESET,
-	GIT_COLOR_YELLOW,	/* ADVISE */
+	GIT_COLOR_YELLOW,	/* HINT */
 };
 
 enum color_advise {
 	ADVISE_COLOR_RESET = 0,
-	ADVISE_COLOR_ADVISE = 1,
+	ADVISE_COLOR_HINT = 1,
 };
 
 static int parse_advise_color_slot(const char *slot)
@@ -35,7 +35,7 @@ static int parse_advise_color_slot(const char *slot)
 	if (!strcasecmp(slot, "reset"))
 		return ADVISE_COLOR_RESET;
 	if (!strcasecmp(slot, "advise"))
-		return ADVISE_COLOR_ADVISE;
+		return ADVISE_COLOR_HINT;
 	return -1;
 }
 
@@ -83,7 +83,7 @@ void advise(const char *advice, ...)
 
 	for (cp = buf.buf; *cp; cp = np) {
 		np = strchrnul(cp, '\n');
-		fprintf(stderr,	_("%shint: %.*s%s\n"), advise_get_color(ADVISE_COLOR_ADVISE),
+		fprintf(stderr,	_("%shint: %.*s%s\n"), advise_get_color(ADVISE_COLOR_HINT),
 			(int)(np - cp), cp, advise_get_color(ADVISE_COLOR_RESET));
 		if (*np)
 			np++;
