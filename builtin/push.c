@@ -497,7 +497,6 @@ static int git_push_config(const char *k, const char *v, void *cb)
 {
 	int *flags = cb;
 	int status;
-	// const char *slot_name;
 
 	status = git_gpg_config(k, v, NULL);
 	if (status)
@@ -535,16 +534,6 @@ static int git_push_config(const char *k, const char *v, void *cb)
 			RECURSE_SUBMODULES_ON_DEMAND : RECURSE_SUBMODULES_OFF;
 		recurse_submodules = val;
 	}
-
-	//if (skip_prefix(k, "color.push.", &slot_name)) {
-	//	int slot = parse_push_color_slot(slot_name);
-	//	if (slot < 0)
-	//		return 0;
-	//	if (!v)
-	//		return config_error_nonbool(k);
-	//	return color_parse(v, push_colors[slot]);
-	//}
-	//return git_color_default_config(k, v, cb);
 
 	return git_default_config(k, v, NULL);
 }
