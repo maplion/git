@@ -1,4 +1,5 @@
 SHELL_PATH='/bin/sh'
+TEST_SHELL_PATH='/bin/sh'
 PERL_PATH='/usr/bin/perl'
 DIFF='diff'
 PYTHON_PATH='/usr/bin/python'
