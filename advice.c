@@ -21,30 +21,30 @@ int advice_add_embedded_repo = 1;
 int advice_ignored_hook = 1;
 int advice_waiting_for_editor = 1;
 
-static int advise_use_color = -1;
-static char advise_colors[][COLOR_MAXLEN] = {
+static int advice_use_color = -1;
+static char advice_colors[][COLOR_MAXLEN] = {
 	GIT_COLOR_RESET,
 	GIT_COLOR_YELLOW,	/* HINT */
 };
 
-enum color_advise {
-	ADVISE_COLOR_RESET = 0,
-	ADVISE_COLOR_HINT = 1,
+enum color_advice {
+	ADVICE_COLOR_RESET = 0,
+	ADVICE_COLOR_HINT = 1,
 };
 
 static int parse_advise_color_slot(const char *slot)
 {
 	if (!strcasecmp(slot, "reset"))
-		return ADVISE_COLOR_RESET;
-	if (!strcasecmp(slot, "advise"))
-		return ADVISE_COLOR_HINT;
+		return ADVICE_COLOR_RESET;
+	if (!strcasecmp(slot, "advice"))
+		return ADVICE_COLOR_HINT;
 	return -1;
 }
 
-static const char *advise_get_color(enum color_advise ix)
+static const char *advise_get_color(enum color_advice ix)
 {
-	if (want_color(advise_use_color))
-		return advise_colors[ix];
+	if (want_color(advice_use_color))
+		return advice_colors[ix];
 	return "";
 }
 
@@ -87,8 +87,8 @@ void advise(const char *advice, ...)
 
 	for (cp = buf.buf; *cp; cp = np) {
 		np = strchrnul(cp, '\n');
-		fprintf(stderr,	_("%shint: %.*s%s\n"), advise_get_color(ADVISE_COLOR_HINT),
-			(int)(np - cp), cp, advise_get_color(ADVISE_COLOR_RESET));
+		fprintf(stderr,	_("%shint: %.*s%s\n"), advise_get_color(ADVICE_COLOR_HINT),
+			(int)(np - cp), cp, advise_get_color(ADVICE_COLOR_RESET));
 		if (*np)
 			np++;
 	}
